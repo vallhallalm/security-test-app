@@ -2,25 +2,34 @@ import { Button, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { getAuth } from "../query/user";
 
 interface AuthProps {
     email?:string
     setEmail (email: string) : void
     password?:string
-    setPassword (email: string) : void
+    setPassword (email: string) : void 
 }
 
 const Auth = (props : AuthProps) => {
-    const { setEmail, setPassword, email, password} = props
+    const {setEmail, setPassword, email, password} = props
     
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [hover, setHover] = useState<boolean>(false)
     const [error, setError] = useState<string>()
-    
+
     const handleClickShowPassword = () => setShowPassword((show) => !show)
 
-    const handleSubmitAuth = (id?:string, pwd?:string) => {
-        if (id && pwd) {
+    async function handleSubmitAuth () {
+        if (email && password) {
+            const auth = await getAuth(email, password)
+            if (auth) {
+                if(auth.data && auth.data.auth==="true") {
+
+                } else {
+                    setError("Identifiant erroné")
+                }
+            }
         }
     }
 
@@ -42,7 +51,7 @@ const Auth = (props : AuthProps) => {
                     helperText="Please enter your email"
                     onChange= {(e) => {
                         if(e) {
-                            setEmail(String(e))
+                            setEmail(String(e.currentTarget.value))
                         } else {setEmail("")}
                     }}
                 />
@@ -60,7 +69,7 @@ const Auth = (props : AuthProps) => {
                     label="Password"
                     onChange= {(e) => {
                         if(e) {
-                            setPassword(String(e))
+                            setPassword(String(e.currentTarget.value))
                         } else {setPassword("")}
                     }}
                 />
@@ -99,8 +108,8 @@ const Auth = (props : AuthProps) => {
                     </Stack>
                     <Button 
                         variant="contained"
-                        onClick={() => handleSubmitAuth(email, password)}
-                        disabled = {email!==undefined && password!==undefined}
+                        onClick={() => handleSubmitAuth()}
+                        disabled = {!(email!==undefined && password!==undefined)}
                     >
                         Sign up
                     </Button>

@@ -8,7 +8,6 @@ const AuthenticationPage = () => {
     const [password, setPassword] = useState<string>()
     const [signUp, setSignUp] = useState<boolean>(true)
 
-
     return (
         <Stack 
             sx={{
