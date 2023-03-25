@@ -44,7 +44,7 @@ const Auth = (props : AuthProps) => {
             } else {
                 const auth = await getAuth(email, password)
                 if (auth) {
-                    if(auth.data && auth.data.auth==="true") {
+                    if(auth.data && auth.data.auth===true) {
 
                     } else {
                         setError("Wrong id or password, please try again")
