@@ -40,7 +40,10 @@ router.post('/:id/:pwd', function(req, res) {
 
   connection.query(`INSERT INTO user(username, password) VALUES ('${req.params.id}', '${req.params.pwd}')`, (err, result) => {
     if(err) {
-      res.send(err)
+      res.send({
+        "status": 400,
+        "error": err
+      })
     } else {
       res.send({
         "status": 201,

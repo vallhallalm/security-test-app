@@ -7,3 +7,9 @@ export async function getAuth (id: string, password: string) {
     const result = await api.request(HTTPMethod.GET, uri) 
     return result
 }
+
+export async function postAuth (id: string, password: string) {
+    const uri=conf.API_BASE_URI+`user/${id}/${password}`
+    const result = await api.request(HTTPMethod.POST, uri) 
+    return result
+}

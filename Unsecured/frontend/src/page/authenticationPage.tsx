@@ -6,7 +6,7 @@ const AuthenticationPage = () => {
 
     const [email, setEmail] = useState<string>()
     const [password, setPassword] = useState<string>()
-    const [signUp, setSignUp] = useState<boolean>(true)
+    const [signUp, setSignUp] = useState<boolean>(false)
 
     return (
         <Stack 
@@ -24,6 +24,8 @@ const AuthenticationPage = () => {
                     email={email}
                     setPassword={setPassword}
                     password={password}
+                    signUp={signUp}
+                    setSignUp={setSignUp}
                 />
             </Stack>
         </Stack>

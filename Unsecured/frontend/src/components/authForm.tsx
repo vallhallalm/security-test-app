@@ -1,18 +1,27 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { getAuth } from "../query/user";
+import { getAuth, postAuth } from "../query/user";
 
 interface AuthProps {
     email?:string
-    setEmail (email: string) : void
+    setEmail (email?: string) : void
     password?:string
-    setPassword (email: string) : void 
+    setPassword (email?: string) : void
+    signUp? : boolean,
+    setSignUp (signUp:boolean) : void
 }
 
 const Auth = (props : AuthProps) => {
-    const {setEmail, setPassword, email, password} = props
+    const {
+        setEmail,
+        setPassword, 
+        email, 
+        password,
+        signUp,
+        setSignUp
+    } = props
     
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [hover, setHover] = useState<boolean>(false)
@@ -22,12 +31,27 @@ const Auth = (props : AuthProps) => {
 
     async function handleSubmitAuth () {
         if (email && password) {
-            const auth = await getAuth(email, password)
-            if (auth) {
-                if(auth.data && auth.data.auth==="true") {
-
+            setError(undefined)
+            if(signUp) {
+                const auth = await postAuth(email, password)
+                if (auth) {
+                    if(auth.data.error && auth.data.error.code==="ER_DUP_ENTRY") {
+                        setError("Already existing username, please try with another one")
+                    }
                 } else {
-                    setError("Identifiant erroné")
+                    setError("Server Error, please try again later  ")
+                }
+            } else {
+                const auth = await getAuth(email, password)
+                if (auth) {
+                    if(auth.data && auth.data.auth==="true") {
+
+                    } else {
+                        setError("Wrong id or password, please try again")
+                        setPassword(undefined)
+                    }
+                } else {
+                    setError("Server Error, please try again later  ")
                 }
             }
         }
@@ -56,47 +80,71 @@ const Auth = (props : AuthProps) => {
                     }}
                 />
             </Stack>
-            <Stack
-                sx={{
-                    flexDirection:"row",
-                    alignItems:"center",
-                    justifyContent:"center"
-                }}
-            >
-                <TextField
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    label="Password"
-                    onChange= {(e) => {
-                        if(e) {
-                            setPassword(String(e.currentTarget.value))
-                        } else {setPassword("")}
-                    }}
-                />
+            <Stack>
                 <Stack
                     sx={{
-                        ml:"10px",
-                        background: hover ? "radial-gradient(#999999 ,#bdb9af)" : ""
+                        flexDirection:"row",
+                        alignItems:"center",
+                        justifyContent:"center"
                     }}
-                    onClick={handleClickShowPassword}
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
                 >
-                    {showPassword  ?
-                            <Visibility/>
-                        :
-                            <VisibilityOff/>
+                    <TextField
+                        id="outlined-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        label="Password"
+                        onChange= {(e) => {
+                            if(e) {
+                                setPassword(String(e.currentTarget.value))
+                            } else {setPassword("")}
+                        }}
+                    />
+                    <Stack
+                        sx={{
+                            ml:"10px",
+                            background: hover ? "radial-gradient(#999999 ,#bdb9af)" : ""
+                        }}
+                        onClick={handleClickShowPassword}
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                    >
+                        {showPassword  ?
+                                <Visibility/>
+                            :
+                                <VisibilityOff/>
+                        }
+                    </Stack>
+                </Stack>
+                <Stack>
+                    {error &&
+                        <Typography
+                            color="red"
+                            fontSize="10px"
+                        >
+                            {error}
+                        </Typography>
                     }
                 </Stack>
             </Stack>
-            <Stack>
-                <Stack>
-
+            <Stack mt="20px" alignContent={"center"}>
+                <Stack
+                    flexDirection="row"
+                >
+                    {!signUp ? "Don't have an account yet ?  " : "Already have an account ?  "} 
+                    <Typography 
+                        onClick={() => {setSignUp(!signUp)}}
+                        color="blue"
+                        sx={{
+                            cursor: "pointer"
+                        }}
+                    > 
+                        {!signUp ? " Sign up" : " Log in"}
+                    </Typography>
                 </Stack>
                 <Stack
                     sx={{
                         flexDirection:"row",
-                        mt:"20px"
+                        mt:"20px",
+                        justifyContent:"center"
                     }}
                 >
                     <Stack mr="10px">
@@ -111,7 +159,7 @@ const Auth = (props : AuthProps) => {
                         onClick={() => handleSubmitAuth()}
                         disabled = {!(email!==undefined && password!==undefined)}
                     >
-                        Sign up
+                        {signUp ? "Sign Up" : "Log In"}
                     </Button>
                 </Stack>
             </Stack>
