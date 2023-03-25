@@ -16,6 +16,6 @@ Our service is built over 3 sub-service which are mysql database, Node.JS API bu
 ## Install the project
 
 To install and run the project locally you will need to install both the three micro-services on your laptop:
-- install [mysql database](./Unsecured/frontend/README.md)
-- install [backend](./Unsecured/backendSQL/README.MD)
-- install [frontend ](./Unsecured/backendJavascript/README.MD)
+- install [mysql database](./Unsecured/backendSQL/README.MD)
+- install [backend](./Unsecured/backendJavascript/README.MD)
+- install [frontend ](./Unsecured/frontend/README.MD)
