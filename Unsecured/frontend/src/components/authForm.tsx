@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { getAuth, postAuth } from "../query/user";
+import { useNavigate } from "react-router-dom";
 
 interface AuthProps {
     email?:string
@@ -27,6 +28,8 @@ const Auth = (props : AuthProps) => {
     const [hover, setHover] = useState<boolean>(false)
     const [error, setError] = useState<string>()
 
+    const navigate = useNavigate()
+
     const handleClickShowPassword = () => setShowPassword((show) => !show)
 
     async function handleSubmitAuth () {
@@ -45,7 +48,7 @@ const Auth = (props : AuthProps) => {
                 const auth = await getAuth(email, password)
                 if (auth) {
                     if(auth.data && auth.data.auth===true) {
-
+                        navigate(`/account?id=${auth.data.id}`)
                     } else {
                         setError("Wrong id or password, please try again")
                         setPassword(undefined)

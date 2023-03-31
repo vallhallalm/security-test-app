@@ -3,7 +3,7 @@ var router = express.Router();
 const mysql = require('mysql');
 const conf = require ('../conf.json')
 
-/* GET home page. */
+/* GET authentification. */
 router.get('/:id/:pwd', function(req, res) {
   let connection = mysql.createConnection({
     host: conf.DB_HOST,
@@ -19,7 +19,10 @@ router.get('/:id/:pwd', function(req, res) {
     } else {
       console.log(`SELECT * FROM user WHERE username='${req.params.id}' && password='${req.params.pwd}'` , result)
       if(result.length!==0) {
-        res.send({"auth":true})
+        res.send({
+          "auth":true,
+          "id": result[0].id
+        })
       } else {
         res.send({"auth":false})
       }
@@ -29,6 +32,7 @@ router.get('/:id/:pwd', function(req, res) {
   connection.end()
 });
 
+/* POST new account. */
 router.post('/:id/:pwd', function(req, res) {
   let connection = mysql.createConnection({
     host: conf.DB_HOST,
