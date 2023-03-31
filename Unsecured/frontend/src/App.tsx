@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import { Stack } from '@mui/material';
 import MaintenancePage from './page/maitenance';
 import { QueryClient, QueryClientProvider } from "react-query";
+import AdminPage from './page/adminPage';
 
 function App() {
   
@@ -21,8 +22,9 @@ function App() {
               <Route  path="/auth" element={<AuthenticationPage/>}/>
               <Route  path="/account" element={<AccountPage/>} />
               <Route  path="/maintenance" element={<MaintenancePage/>} />
+              <Route  path="/admin" element={<AdminPage/>} />
             </Routes>
-            {window.location.pathname !== "/" && (
+            {window.location.pathname !== ("/"||"/admin") && (
               <Stack
                 position="sticky"
                 bottom="0px"

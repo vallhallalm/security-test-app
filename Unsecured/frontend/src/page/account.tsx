@@ -3,8 +3,23 @@ import Topbar from "../components/topbar"
 import { Stack, TextField, Typography } from "@mui/material"
 import Compte from "../components/compte"
 import MultiBankComp from "../components/multibank"
+import { useSearchParams } from "react-router-dom"
+import {useQuery} from 'react-query'
+import { getAccount } from "../query/account"
 
 const AccountPage = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const userId = searchParams.get("id")
+
+    const {data, isLoading} = useQuery({
+        queryKey: ["account", userId],
+        queryFn: () => {
+            if(userId) {
+                getAccount(Number(userId))
+            }
+        }
+    })
 
     return (
         <>
@@ -25,6 +40,8 @@ const AccountPage = () => {
             <Stack
                 pb="24px"
                 pt="24px"
+                justifyContent="center"
+                alignItems="center"
             >
                 <Typography
                 pl="16px"
@@ -35,20 +52,28 @@ const AccountPage = () => {
                 justifyContent={"center"}
                 alignItems="center"
                 >
-                {/*data ? (
+                {/*isLoading ? (
                     <>
-                    {data.map((item) => {
-                        return (
-                        <Stack
-                            sx={{ pt:"12px" }}
-                        >
-                            <Compte title={item.title} price={item.price} />
-                        </Stack>
-                        )
-                    })}
+
                     </>
-                ) : (
-                    <></>
+                ): (
+                    <>
+                        {data && data ? (
+                            <>
+                                {data.map((item) => {
+                                    return (
+                                    <Stack
+                                        sx={{ pt:"12px" }}
+                                    >
+                                        <Compte title={item.title} price={item.price} />
+                                    </Stack>
+                                    )
+                                })}
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </>
                 )*/}
                 </Stack>
             </Stack>
