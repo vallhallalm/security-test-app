@@ -3,7 +3,11 @@ version : '3'
 services : 
 
   frontend:
-    image: securityappfront
+    build:
+      context: './frontend'
+    networks:
+      unsecured-network:
+        ipv4_address: 172.15.200.3
     ports:
       - 80:80
     links:
@@ -12,7 +16,11 @@ services :
   api: 
     depends_on:
       - db
-    image: securityappapi
+    networks:
+      unsecured-network:
+        ipv4_address: 172.15.200.2
+    build:
+      context: './backendJavascript'
     links:
       - db
     ports:
@@ -25,6 +33,9 @@ services :
     # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
     # (this is just an example, not intended to be a production configuration)
     command: --default-authentication-plugin=mysql_native_password
+    networks:
+      unsecured-network:
+        ipv4_address: 172.15.200.1
     restart: always
     ports:
       - 3306:3306
@@ -38,3 +49,11 @@ services :
     restart: always
     ports:
       - 8080:8080
+
+networks:
+  unsecured-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.15.200.0/16
+          ip_range: 172.15.200.0/24
