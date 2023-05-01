@@ -21,6 +21,8 @@ router.get('/:id/:pwd', function(req, res) {
       if(result.length!==0) {
         res.send({
           "auth":true,
+          "admin": result[0].admin,
+          "data": result,
           "id": result[0].id
         })
       } else {

@@ -47,6 +47,11 @@ services :
   adminer:
     image: adminer
     restart: always
+    networks:
+      unsecured-network:
+        ipv4_address: 172.15.200.4
+    environment:
+      ADMINER_DEFAULT_DB_HOST: 172.15.200.1
     ports:
       - 8080:8080
 
