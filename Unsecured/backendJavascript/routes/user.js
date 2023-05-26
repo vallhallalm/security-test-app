@@ -3,7 +3,24 @@ var router = express.Router();
 const mysql = require('mysql');
 const conf = require ('../conf.json')
 
-/* GET authentification. */
+/**
+ * @openapi
+ * /user/:id/:pwd:
+ *   get:
+ *     description: Get bank account informations of the user
+ *     parameters:
+  *     - in: path
+  *       name: id
+  *       schema:
+  *        type: string
+  *     - in: path
+  *       name: pwd
+  *       schema:
+  *        type: string
+ *     responses:
+ *       200:
+ *         description: Returns the bank account informations
+ */
 router.get('/:id/:pwd', function(req, res) {
   let connection = mysql.createConnection({
     host: conf.DB_HOST,

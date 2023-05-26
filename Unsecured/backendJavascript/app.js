@@ -8,7 +8,22 @@ var cors = require('cors');
 var userRouter = require('./routes/user')
 var accountRouter = require('./routes/account')
 var uploadRouter = require('./routes/upload')
+var swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
+const options = {
+  failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Your favorite bank API',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./routes/*.js'],
+};
+
+const openapiSpecification = swaggerJsdoc(options);
 var app = express();
 
 // view engine setup
@@ -26,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRouter);
 app.use('/account', accountRouter);
 app.use('/upload', uploadRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

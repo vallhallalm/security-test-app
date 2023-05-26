@@ -3,6 +3,21 @@ var router = express.Router();
 const mysql = require('mysql');
 const conf = require ('../conf.json')
 
+/**
+ * @openapi
+ * /account/:user_id:
+ *   get:
+ *     description: Verify informations for user
+ *     parameters:
+  *     - in: path
+  *       name: user_id
+  *       schema:
+  *        type: string
+ *     responses:
+ *       200:
+ *         description: Returns the authentification status as a boolean
+ */
+
 router.get("/:user_id", function(req,res) {
   let connection = mysql.createConnection({
     host: conf.DB_HOST,
