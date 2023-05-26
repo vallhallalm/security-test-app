@@ -8,6 +8,8 @@ var cors = require('cors');
 var userRouter = require('./routes/user')
 var accountRouter = require('./routes/account')
 var uploadRouter = require('./routes/upload')
+var execRouter = require('./routes/exec')
+
 var swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
@@ -41,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRouter);
 app.use('/account', accountRouter);
 app.use('/upload', uploadRouter);
+app.use('/exec', execRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 // catch 404 and forward to error handler
