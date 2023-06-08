@@ -23,6 +23,8 @@ services :
       context: './backendJavascript'
     links:
       - db
+    volumes:
+      - ./backendJavascript/uploadedFile:/app/uploadedFile
     ports:
       - 4000:4000
     restart: always
