@@ -7,11 +7,11 @@ Welcome to this repo that hold our IF27 project. This project goal was for us to
 Our service is built over 3 sub-service which are mysql database, Node.JS API built with Express framework as a backend and finally a React app. This service is fully dockerized.
 
 ## Requirements
--Docker
--Node.JS v18 
--Express
--React 
--Mysql
+- Docker
+- Node.JS v18 
+- Express
+- React 
+- Mysql
 
 ## Install the project
 
